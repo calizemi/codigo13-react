@@ -1,25 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
+// El primer paso para definir un componente es el nombre
+// El nombre de un componente siempre debe iniciar en Mayuscula
+// El componente es una funcion
+// podemos crearlo usando function o arow function
+const PrimerComponente=()=>{
+      // Esta funcion retorna una vista
+      // en react usamos return()para indicar que lo que esta dentro de los parentesis
+      // sera el objeto visual que vamos a retornar
+      // algo importante es que react solo puede retornar un div
+      return(
+        <div>
+          <h1>Hola mundo</h1>
+          <div>
+            <h4>Hola codigo</h4>
+          </div>
+        </div>
+      );
+};
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+//Luego de crear el componente debemos exportarlo
 
-export default App;
+
+export default PrimerComponente;

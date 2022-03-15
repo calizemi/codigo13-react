@@ -1,12 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
+import PrimerComponente from './App';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    {/* para importar un archivo debemos colocarlo como una etiqueta */}
+    <PrimerComponente />
   </React.StrictMode>,
   document.getElementById('root')
 );
