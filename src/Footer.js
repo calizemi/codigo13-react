@@ -2,7 +2,7 @@ const Footer = () => {
     return (
       <div>
         <footer>
-          <h4>All right reserved @CopyRight</h4>
+        <p>All Copyright © reserved</p>
         </footer>
       </div>
     );
