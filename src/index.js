@@ -4,13 +4,13 @@ import './index.css';
 import PrimerComponente from './App';
 import reportWebVitals from './reportWebVitals';
 // Por default el archivo que se exporta es index asi que no hace falta llamarlo
-import Home from "./pages/Home";
+import App from "./App"
 
 ReactDOM.render(
   <React.StrictMode>
     {/* para importar un archivo debemos colocarlo como una etiqueta */}
     {/* <PrimerComponente /> */}
-    <Home />
+    <App />
   </React.StrictMode>,
   document.getElementById('root')
 );
