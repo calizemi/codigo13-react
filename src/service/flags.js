@@ -10,10 +10,10 @@
  
  
  // Sera para poder obtener el detalle de una pelicula
- export const getCountryDetail = async (name) => {
+ export const getCountryDetail = async (urld=URL,name) => {
    try {
      
-     const response = await fetch(`${URL}/${name}`);
+     const response = await fetch(`${urld}/${name}`);
      const data = await response.json();
      
      return data;

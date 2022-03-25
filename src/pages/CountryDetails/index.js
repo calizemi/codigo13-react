@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import {
   Button,
   Box,
@@ -10,104 +10,167 @@ import {
   Slider,
 } from "@mui/material";
 import { getCountryDetail } from "../../service/flags";
+import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
 
 const CountryDetails = () => {
   const { name } = useParams();
+  const URL1 = "https://restcountries.com/v3.1/name";
+  const URL2 = "https://restcountries.com/v3.1/alpha";
 
   const [country, setCountry] = useState({});
+  const [countryBorder, setCountryBorder] = useState([]);
+  const [vcountryBorder, setvCountryBorder] = useState();
+
+  const navigation = useNavigate();
+
+  const fetchNameCountryBorder = async (nameBorder) => {
+    try{
+    const response = await getCountryDetail(URL2, nameBorder);
+    const data = await response[0].name.common;
+    setCountryBorder([data]);
+    return data
+    }
+    catch(e){}
+
+    // cuando hacemos la peticion podemos llenar a values usando setValues
+  };
 
   const fetchDetailCountry = async () => {
-    const response = await getCountryDetail(name);
+    const response = await getCountryDetail(URL1, name);
     // cuando hacemos la peticion podemos llenar a values usando setValues
     setCountry({
       ...response,
     });
+
+    setCountryBorder([]);
+
+    Object.keys(response[0].borders).map((bordercito) =>(
+      fetchNameCountryBorder(
+        response[0].borders[bordercito].toLowerCase()
+      ).then(console.log(countryBorder+bordercito)))
+    );
   };
 
   useEffect(() => {
     fetchDetailCountry();
   }, []);
+  
 
   return (
     <div>
       <Container
-      sx={{
+        sx={{
+          maxwidth: 100,
+          height: 10,
+          fontsize: 3,
+        }}
+      />
 
-        maxwidth: 100,
-        height: 25,
-        fontsize: 3,
-      
-      }}
-    />
-
-    <h3><b>Where in the World?</b></h3><br/>
+      <h3>
+        <b style={{ padding: 10 }}>Where in the World?</b>
+      </h3>
+      <br />
 
       <Box
-      sx={{
-
-        maxwidth: '100vh',
-        height: 2,
-      
-        bgcolor: 'text.disabled', 
-        opacity: [0.9, 0.8, 0.7],
-        
-      }}
-    />
+        sx={{
+          maxwidth: "100vh",
+          height: 2,
+          bgcolor: "text.disabled",
+        }}
+      />
+      <Grid container m={3}>
+        <Grid item md={12}>
+          <Button
+            sx={{ alignItems: "center" }}
+            variant="contained"
+            onClick={() => {
+              navigation(-1);
+            }}
+          >
+            <ArrowBackRoundedIcon />
+            Back
+          </Button>
+        </Grid>
+      </Grid>
       {country[0] !== undefined && (
         //  <h2 className="name-pokemon">{country["0"].name.official}</h2>
-        <Grid container spacing={3} mt={10}>
-          <Grid item md={6} className="center">
-            <img width={500} src={country["0"].flags.svg} alt="" />
+        <Grid container spacing={3} mt={3}>
+          <Grid item md={5} border={1} className="center">
+            <img
+              border={1}
+              height="400vh"
+              width="600vw"
+              src={country["0"].flags.svg}
+              alt=""
+            />
           </Grid>
-          <Grid item md={6}>
+          <Grid item md={7}>
             <h1> {country[0].name.common}</h1>
             <Grid container spacing={2}>
-              <Grid item md={6}>
+              <Grid item md={6} sx={{ height: "30vh" }}>
                 <b>Native Name: </b>
-                {Object.keys(country[0].name.nativeName).map((nativeName,item) => (
-                  
-                  item===0 &&(
-                  <span>{country[0].name.nativeName[nativeName].official}</span>)
-                ))}<br/>
-                  <b>Population: </b>
-                  {country["0"].population}<br/>
-                  <b mt={2}>Región: </b>
-                  {country["0"].region}<br/>
-                  <b>Sub Región: </b>
-                  {country["0"].subregion}<br/>
-                  <b>Capital: </b>
-                  {country["0"].capital}<br/>
+                {Object.keys(country[0].name.nativeName).map(
+                  (nativeName, item) =>
+                    item ===
+                      Object.keys(country[0].name.nativeName).length - 1 && (
+                      <span>
+                        {country[0].name.nativeName[nativeName].common}
+                      </span>
+                    )
+                )}
+                <br />
+                <br />
+                <b>Population: </b>
+
+                {Intl.NumberFormat("en-EN").format(country["0"].population)}
+                <br />
+                <br />
+                <b mt={2}>Región: </b>
+                {country["0"].region}
+                <br />
+                <br />
+                <b>Sub Región: </b>
+                {country["0"].subregion}
+                <br />
+                <br />
+                <b>Capital: </b>
+                {country["0"].capital}
+                <br />
+                <br />
               </Grid>
-              <Grid item md={6}>
-              <b>Top Level Domain: </b>
-                  {country["0"].tld[0]}<br/>
-                  <b>Currencies: </b>
+              <Grid item md={6} sx={{ height: "30vh" }}>
+                <b>Top Level Domain: </b>
+                {country["0"].tld[0]}
+                <br />
+                <br />
+                <b>Currencies: </b>
                 {Object.keys(country[0].currencies).map((currencito) => (
                   <span>{country[0].currencies[currencito].name}</span>
-                ))}<br/>
+                ))}
+                <br />
+                <br />
                 <b>Languages: </b>
-                {Object.keys(country[0].languages).map((languageito) => (
-                  <span>{`${country[0].languages[languageito]}, `}</span>
-                ))}<br/>
+                {Object.keys(country[0].languages).map((languageito, item) =>
+                  item === Object.keys(country[0].languages).length - 1 ? (
+                    <span>{`${country[0].languages[languageito]} `}</span>
+                  ) : (
+                    <span>{`${country[0].languages[languageito]}, `}</span>
+                  )
+                )}
+                <br />
+                <br />
+              </Grid>
+              <Grid item md={12} sx={{ height: "10vh" }} border={1}>
+                <b>Borders: </b>
+                {countryBorder}
+                <br />
+                <br />
               </Grid>
             </Grid>
-
-            {/* <Chip
-                    label={country["0"].population}
-                    color="success"
-                    sx={{ marginRight: 2 }}
-                  /> */}
           </Grid>
         </Grid>
       )}
-   
-
-    //
-
-    //     </div>
-    //     )};
-
-    // </div>
+    </div>
   );
 };
 
