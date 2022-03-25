@@ -19,21 +19,8 @@ const CountryDetails = () => {
 
   const [country, setCountry] = useState({});
   const [countryBorder, setCountryBorder] = useState([]);
-  const [vcountryBorder, setvCountryBorder] = useState();
 
   const navigation = useNavigate();
-
-  const fetchNameCountryBorder = async (nameBorder) => {
-    try{
-    const response = await getCountryDetail(URL2, nameBorder);
-    const data = await response[0].name.common;
-    setCountryBorder([data]);
-    return data
-    }
-    catch(e){}
-
-    // cuando hacemos la peticion podemos llenar a values usando setValues
-  };
 
   const fetchDetailCountry = async () => {
     const response = await getCountryDetail(URL1, name);
@@ -41,20 +28,41 @@ const CountryDetails = () => {
     setCountry({
       ...response,
     });
+    fetchNameCountryBorder(response[0].borders)
 
-    setCountryBorder([]);
-
-    Object.keys(response[0].borders).map((bordercito) =>(
-      fetchNameCountryBorder(
-        response[0].borders[bordercito].toLowerCase()
-      ).then(console.log(countryBorder+bordercito)))
-    );
   };
+  const fetchNameCountryBorder = async (nameArrayBorder) => {
+    let i=0;
+    let nameCountryBorder=[];
+
+    setCountryBorder("");
+    
+     for(i=0;i<nameArrayBorder.length;i++){
+       const nameBorder=nameArrayBorder[i];
+       const response =  await getCountryDetail(URL2, nameBorder);
+       const data = await response;
+       
+       nameCountryBorder = [...nameCountryBorder,data[0].name.common];
+       console.log(11,countryBorder,nameCountryBorder,i)
+       setCountryBorder(nameCountryBorder);
+       
+     
+ 
+     
+   };
+   
+     // cuando hacemos la peticion podemos llenar a values usando setValues
+   };
+
 
   useEffect(() => {
     fetchDetailCountry();
+    
   }, []);
-  
+ 
+  //fetchNameCountryBorder(country[0]?.borders);
+  console.log("5",countryBorder)
+   
 
   return (
     <div>
