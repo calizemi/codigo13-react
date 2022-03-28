@@ -11,6 +11,7 @@ import Main from "../layouts/Main";
 import Private from "../layouts/Private";
 import Ecommerce from "../layouts/Ecommerce";
 import PopularWeek from "../pages/PopularWeek";
+import BasketView from "../pages/BasketView";
 // nuestro router va a ser un componente el cual se encargue de retornar
 // las rutas con su respectiva vista
 const Router = () => {
@@ -28,6 +29,7 @@ const Router = () => {
         {/* ROUTE para ecommerce */}
         <Route element={<Ecommerce />}>
           <Route path="ecommerce" element={<PopularWeek />} />
+          <Route path="ecommerce/basket" element={<BasketView />} />
         </Route>
         {/* ROUTE DEL ADMIN (PRIVADAS) */}
         <Route element={<Private />}>
